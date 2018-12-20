@@ -1,0 +1,9 @@
+SELECT MAX(orm.order_number)
+FROM t_order orm WITH (NOLOCK)
+JOIN t_import_order imp
+ON orm.order_number = imp.order_number
+     WHERE orm.order_date BETWEEN '2018-12-18 13:00:00.00' AND '2018-12-19 13:00:00.00'
+AND imp.carrier_code LIKE 'F%'
+AND orm.order_number NOT LIKE 'TO%'
+AND orm.order_number NOT LIKE 'RTV%'
+AND orm.order_number NOT LIKE 'SO%'
