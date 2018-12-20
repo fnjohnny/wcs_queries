@@ -1,7 +1,10 @@
 
 -- determine items that have a demand greater than the quantity available in the pickmod and insert into a temptable
 SELECT m.item_number, m.shopify_product_variant_id as vid,  Coalesce(SUM(d.demand), 0) AS q INTO #TMP_REPLEN FROM t_item_master m
-LEFT OUTER JOIN(SELECT item_number, SUM(ord.qty) AS 'demand' FROM t_order_detail ord with(NOLOCK) INNER JOIN t_order orm with(NOLOCK) ON orm.order_number = ord.order_number WHERE orm.status IN('AUTOFAIL','IMPORTED','RATEFAIL','RATING','RELEASED') 
+LEFT OUTER JOIN(SELECT item_number, SUM(ord.qty) AS 'demand' 
+FROM t_order_detail ord with(NOLOCK) INNER JOIN t_order orm with(NOLOCK) 
+ON orm.order_number = ord.order_number 
+WHERE orm.status IN('AUTOFAIL','IMPORTED','RATEFAIL','RATING','RELEASED') 
 --AND orm.order_date < '2018-11-26'-- 
 AND item_number IN ()
 GROUP BY item_number) d
